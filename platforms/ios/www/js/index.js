@@ -24,8 +24,15 @@
 //var ws = new WebSocket('ws://' + host + ':9111');
 
 var heldDown = false;
-var counter = 0; // used to count morse short and longs and super-longs (for deleting morse character)
-var beans = 0; // used to count enter features of press -- short (add letter), long (read word), super-long (delete letter)
+
+
+var shortCounter = 0; // used to count morse short and longs and super-longs (for deleting morse character)
+
+
+var longCounter = 0; // used to count enter features of press -- short (add letter), long (read word), super-long (delete letter)
+
+
+var enterCounter = 0;
 
 var app = {
     // Application Constructor
@@ -51,62 +58,93 @@ var app = {
            return;
          }
 
-        if (event.key == "Enter"){ // if keydown is an Enter key, add to "counter" variable
-          //event.preventDefault();
-          counter = counter + 1;
-
-        }
-
-        else if (event.key == " "){ // if keydown is a Space key, add to "beans" variable
+        if (event.key == " "){ // if keydown is an Enter key, add to "shortCounter" variable
           event.preventDefault();
-          beans = beans + 1;
+          shortCounter = shortCounter + 1;
+
         }
 
-        if (counter == 1) {
-          heldDown == true;
-          //app.playShort();
+        else if (event.key == "Enter"){ // if keydown is a Space key, add to "longCounter" variable
+          event.preventDefault();
+          longCounter = longCounter + 1;
+        }
+
+        else if (event.key == "Tab"){ // if keydown is a __ key, add to "enterCounter" variable
+          event.preventDefault();
+          enterCounter = enterCounter + 1;
+        }
+
+        if (shortCounter == 1) {
+          //heldDown == true;
+          app.playSound("media/shortHarp.mp3");
+        }
+        if (shortCounter == 6){
+          app.playSound("media/longHarp.mp3");
+        }
+        if (longCounter == 1) {
+          //heldDown == true;
+          app.playSound("media/shortSpiel.mp3");
+        }
+        if (longCounter == 6){
+          app.playSound("media/longSpiel.mp3");
+        }
+        if (enterCounter == 1) {
+          //heldDown == true;
+          app.playSound("media/bell.mp3");
+        }
+        if (enterCounter == 6){
+          app.playSound("media/piano.mp3");
         }
 
       });
 
-/*
-      if (counter > 0 && counter <= 5) {
-        app.playShort();
-      }
-*/
-
       window.addEventListener("keyup", function(event){
-        if (counter > 0 && counter <= 5){
-        var morseLetter = document.getElementById('TextField').value = document.getElementById('TextField').value + '.';
-        app.getMorse(decodedLetters);
-        counter = 0;
-        heldDown == false;
+        // adds a short to the text field
+        if (shortCounter > 0 && shortCounter <= 5){
+          var morseLetter = document.getElementById('TextField').value = document.getElementById('TextField').value + '.';
+          app.getMorse(decodedLetters);
+          shortCounter = 0;
+          heldDown == false;
       }
 
-        else if (counter > 5 && counter <= 20){
-          var morseLetter = document.getElementById('TextField').value =  document.getElementById('TextField').value + '-';
-          app.getMorse(decodedLetters);
-          counter = 0;
-          heldDown == false;
-        }
-
-        else if (counter > 20){
+        // deletes morse character in input field
+        else if (shortCounter > 5){
           var morseCode = document.getElementById('TextField').value;
           document.getElementById('TextField').value = morseCode.substring(0, morseCode.length-1);
           app.getMorse(decodedLetters);
-          counter = 0;
+          shortCounter = 0;
           heldDown == false;
         }
 
-        else if (beans > 0 && beans <= 5){
+        // adds a long
+        else if (longCounter > 0 && longCounter <=5){
+          var morseLetter = document.getElementById('TextField').value =  document.getElementById('TextField').value + '-';
+          app.getMorse(decodedLetters);
+          longCounter = 0;
+          heldDown == false;
+        }
+
+        // deletes letter from top
+        else if (longCounter > 5){
           var decodedText = app.getMorse(decodedLetters);
           decodedLetters.push(decodedText);
-          document.getElementById('TextField').value = '';
-          beans = 0;
+          decodedLetters.splice(-2);
+          app.getMorse(decodedLetters);
+          longCounter = 0;
           app.focusElement();
         }
 
-        else if (beans > 5 && beans <= 20){
+        // adds letter from morse input
+        else if (enterCounter > 0 && enterCounter <= 5){
+          var decodedText = app.getMorse(decodedLetters);
+          decodedLetters.push(decodedText);
+          document.getElementById('TextField').value = '';
+          enterCounter = 0;
+          app.focusElement();
+        }
+
+        // reads submitted letters
+        else if (enterCounter > 5){
           var decodedText = app.getMorse(decodedLetters);
           decodedLetters.push(decodedText);
           var phraseToSpeak = app.compileWord(decodedLetters);
@@ -114,24 +152,15 @@ var app = {
           //ws.send(phraseToSpeak);
           document.getElementById('TextField').value = "";
           decodedLetters.splice(0, decodedLetters.length);
-          beans = 0;
-          app.focusElement();
-        }
-
-        else if (beans > 20){
-          var decodedText = app.getMorse(decodedLetters);
-          decodedLetters.push(decodedText);
-          decodedLetters.splice(-2);
-          app.getMorse(decodedLetters);
-          beans = 0;
+          enterCounter = 0;
           app.focusElement();
         }
 
         else {
-          counter = 0;
-          beans = 0;
+          shortCounter = 0;
+          longCounter = 0;
+          enterCounter = 0;
         }
-
       });
     },
 
@@ -162,10 +191,27 @@ var app = {
       return decodedText;
     },
 
-    playShort: function() {
+    playSound: function(fileName) {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
       var path = window.location.pathname;
       path = path.substr( path, path.length - 10 );
-      path = path + "media/short.mp3";
+      path = path + fileName;
+      var my_media = new Media(path, function (){
+        console.log("playAudio():Audio Success");
+      },
+        function() {
+        alert("playAudio Error " + err);
+        }
+      );
+        //alert("here");
+      my_media.play();
+    },
+/*
+    playShort2: function() {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
+      var path = window.location.pathname;
+      path = path.substr( path, path.length - 10 );
+      path = path + "media/bell.mp3";
       var my_media = new Media(path, function (){
         console.log("playAudio():Audio Success");
       },
@@ -177,6 +223,70 @@ var app = {
       my_media.play();
     },
 
+    playLong1: function() {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
+      var path = window.location.pathname;
+      path = path.substr( path, path.length - 10 );
+      path = path + "media/organ.mp3";
+      var my_media = new Media(path, function (){
+        console.log("playAudio():Audio Success");
+      },
+        function() {
+        alert("playAudio Error " + err);
+        }
+      );
+        //alert("here");
+      my_media.play();
+    },
+
+    playLong2: function() {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
+      var path = window.location.pathname;
+      path = path.substr( path, path.length - 10 );
+      path = path + "media/piano.mp3";
+      var my_media = new Media(path, function (){
+        console.log("playAudio():Audio Success");
+      },
+        function() {
+        alert("playAudio Error " + err);
+        }
+      );
+        //alert("here");
+      my_media.play();
+    },
+
+    playEnter1: function() {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
+      var path = window.location.pathname;
+      path = path.substr( path, path.length - 10 );
+      path = path + "media/organ.mp3";
+      var my_media = new Media(path, function (){
+        console.log("playAudio():Audio Success");
+      },
+        function() {
+        alert("playAudio Error " + err);
+        }
+      );
+        //alert("here");
+      my_media.play();
+    },
+
+    playEnter2: function() {
+      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
+      var path = window.location.pathname;
+      path = path.substr( path, path.length - 10 );
+      path = path + "media/piano.mp3";
+      var my_media = new Media(path, function (){
+        console.log("playAudio():Audio Success");
+      },
+        function() {
+        alert("playAudio Error " + err);
+        }
+      );
+        //alert("here");
+      my_media.play();
+    },
+*/
     removeTextNodes: function(decodeField){
       var nodesToRemove = decodeField.childNodes;
       for (var i = 0; i < nodesToRemove.length; i++){
@@ -186,61 +296,3 @@ var app = {
 };
 
 app.initialize();
-
-/*
-      document.getElementById('submitText').addEventListener('touchend', function(){
-        var decodedText = app.getMorse(decodedLetters);
-        decodedLetters.push(decodedText);
-        var phraseToSpeak = app.compileWord(decodedLetters);
-        responsiveVoice.speak(phraseToSpeak, "US English Male");
-        ws.send(phraseToSpeak);
-        document.getElementById('TextField').value = "";
-        decodedLetters.splice(0, decodedLetters.length);
-      });
-
-      window.addEventListener("keydown", function(event){
-        if (event.defaultPrevented) {
-          return; // Do nothing if the event was already processed
-        }
-
-        switch (event.key) {
-          case "Enter":
-            counter = counter + 1;
-            if (counter > 0 || counter < 3){
-            var morseLetter = document.getElementById('TextField').value = document.getElementById('TextField').value + '.';
-            app.getMorse(decodedLetters);
-            counter = 0;
-          }
-            break;
-        }
-
-      });
-
-      document.getElementById('dot').addEventListener('touchend', function(){
-        var morseLetter = document.getElementById('TextField').value = document.getElementById('TextField').value + '.';
-        app.playShort();
-        app.getMorse(decodedLetters);
-      });
-
-      document.getElementById('dash').addEventListener('touchend', function(){
-        var morseLetter = document.getElementById('TextField').value = document.getElementById('TextField').value + '-';
-        app.getMorse(decodedLetters);
-      });
-
-      document.getElementById('space').addEventListener('touchend', function(){
-        var decodedText = app.getMorse(decodedLetters);
-        decodedLetters.push(decodedText);
-        document.getElementById('TextField').value = '';
-      });
-
-      document.getElementById('deleteLetter').addEventListener('touchend', function(){
-        var morseCode = document.getElementById('TextField').value;
-        document.getElementById('TextField').value = morseCode.substring(0, morseCode.length-1);
-        app.getMorse(decodedLetters);
-      });
-
-
-      document.getElementById('sendText').addEventListener('touchend', function(){
-        alert("pressed");
-      });
-*/

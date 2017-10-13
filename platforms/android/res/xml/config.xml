@@ -4,7 +4,7 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <name>Morse2Go</name>
+    <name>Morse2Go--Three Button Input</name>
     <description>
         Morse Code application built from Mor.js and ResponsiveVoice JS v1.5.1.  Inspired by work Jim Wroten at http://morse2go.org/.
     </description>

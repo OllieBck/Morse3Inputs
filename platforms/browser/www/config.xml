@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="info.jasonbeck" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Morse2Go</name>
+    <name>Morse2Go--Three Button Input</name>
     <description>
         Morse Code application built from Mor.js and ResponsiveVoice JS v1.5.1.  Inspired by work Jim Wroten at http://morse2go.org/.
     </description>
