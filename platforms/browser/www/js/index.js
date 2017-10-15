@@ -78,21 +78,21 @@ var app = {
           //heldDown == true;
           app.playSound("media/shortHarp.mp3");
         }
-        if (shortCounter == 6){
+        else if (shortCounter == 6){
           app.playSound("media/longHarp.mp3");
         }
         if (longCounter == 1) {
           //heldDown == true;
           app.playSound("media/shortSpiel.mp3");
         }
-        if (longCounter == 6){
+        else if (longCounter == 6){
           app.playSound("media/longSpiel.mp3");
         }
         if (enterCounter == 1) {
           //heldDown == true;
           app.playSound("media/bell.mp3");
         }
-        if (enterCounter == 6){
+        else if (enterCounter == 6){
           app.playSound("media/piano.mp3");
         }
 
@@ -206,87 +206,7 @@ var app = {
         //alert("here");
       my_media.play();
     },
-/*
-    playShort2: function() {
-      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
-      var path = window.location.pathname;
-      path = path.substr( path, path.length - 10 );
-      path = path + "media/bell.mp3";
-      var my_media = new Media(path, function (){
-        console.log("playAudio():Audio Success");
-      },
-        function() {
-        alert("playAudio Error " + err);
-        }
-      );
-        //alert("here");
-      my_media.play();
-    },
 
-    playLong1: function() {
-      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
-      var path = window.location.pathname;
-      path = path.substr( path, path.length - 10 );
-      path = path + "media/organ.mp3";
-      var my_media = new Media(path, function (){
-        console.log("playAudio():Audio Success");
-      },
-        function() {
-        alert("playAudio Error " + err);
-        }
-      );
-        //alert("here");
-      my_media.play();
-    },
-
-    playLong2: function() {
-      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
-      var path = window.location.pathname;
-      path = path.substr( path, path.length - 10 );
-      path = path + "media/piano.mp3";
-      var my_media = new Media(path, function (){
-        console.log("playAudio():Audio Success");
-      },
-        function() {
-        alert("playAudio Error " + err);
-        }
-      );
-        //alert("here");
-      my_media.play();
-    },
-
-    playEnter1: function() {
-      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
-      var path = window.location.pathname;
-      path = path.substr( path, path.length - 10 );
-      path = path + "media/organ.mp3";
-      var my_media = new Media(path, function (){
-        console.log("playAudio():Audio Success");
-      },
-        function() {
-        alert("playAudio Error " + err);
-        }
-      );
-        //alert("here");
-      my_media.play();
-    },
-
-    playEnter2: function() {
-      //https://stackoverflow.com/questions/28339389/how-to-get-path-for-local-mp3-file-from-www-in-phonegap-ios
-      var path = window.location.pathname;
-      path = path.substr( path, path.length - 10 );
-      path = path + "media/piano.mp3";
-      var my_media = new Media(path, function (){
-        console.log("playAudio():Audio Success");
-      },
-        function() {
-        alert("playAudio Error " + err);
-        }
-      );
-        //alert("here");
-      my_media.play();
-    },
-*/
     removeTextNodes: function(decodeField){
       var nodesToRemove = decodeField.childNodes;
       for (var i = 0; i < nodesToRemove.length; i++){
