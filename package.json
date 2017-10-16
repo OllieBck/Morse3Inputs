@@ -1,7 +1,7 @@
 {
   "name": "info.jasonbeck",
   "version": "1.0.0",
-  "displayName": "Morse2Go",
+  "displayName": "Morse2Go--3input",
   "cordova": {
     "platforms": [
       "android"
