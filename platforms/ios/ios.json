@@ -4,8 +4,36 @@
     "uninstalled": []
   },
   "config_munge": {
-    "files": {}
+    "files": {
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"CDVKeyboard\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
   },
-  "installed_plugins": {},
-  "dependent_plugins": {}
+  "installed_plugins": {
+    "cordova-plugin-keyboard": {
+      "PACKAGE_NAME": "info.jasonbeck"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cordova-plugin-keyboard.keyboard",
+      "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
+      "pluginId": "cordova-plugin-keyboard",
+      "clobbers": [
+        "window.Keyboard"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-keyboard": "1.1.5"
+  }
 }

@@ -26,4 +26,7 @@
     <preference name="BackgroundColor" value="0xff0000ff" />
     <preference name="Orientation" value="landscape" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <feature name="Keyboard">
+        <param name="android-package" onload="true" value="org.apache.cordova.labs.keyboard.Keyboard" />
+    </feature>
 </widget>
