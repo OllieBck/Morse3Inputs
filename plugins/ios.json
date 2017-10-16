@@ -8,7 +8,7 @@
   },
   "installed_plugins": {
     "cordova-plugin-keyboard": {
-      "PACKAGE_NAME": "info.jasonbeck"
+      "PACKAGE_NAME": "info.jasonbeck.morse2go"
     }
   },
   "dependent_plugins": {}
