@@ -4,6 +4,9 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Keyboard">
+        <param name="android-package" onload="true" value="org.apache.cordova.labs.keyboard.Keyboard" />
+    </feature>
     <name>Morse2Go--Three Button Input</name>
     <description>
         Morse Code application built from Mor.js and ResponsiveVoice JS v1.5.1.  Inspired by work Jim Wroten at http://morse2go.org/.
@@ -26,7 +29,4 @@
     <preference name="BackgroundColor" value="0xff0000ff" />
     <preference name="Orientation" value="landscape" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <feature name="Keyboard">
-        <param name="android-package" onload="true" value="org.apache.cordova.labs.keyboard.Keyboard" />
-    </feature>
 </widget>
